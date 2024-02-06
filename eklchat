@@ -1,0 +1,50 @@
+class HotelChatbot:
+    def __init__(self):
+        self.room_rates = {'single': 100, 'double': 150, 'suite': 200}
+        self.restaurant_rates = {'breakfast': 15, 'lunch': 20, 'dinner': 25}
+
+    def get_room_rate(self, room_type):
+        return self.room_rates.get(room_type.lower(), 'Invalid room type')
+
+    def get_restaurant_rate(self, meal_type):
+        return self.restaurant_rates.get(meal_type.lower(), 'Invalid meal type')
+
+    def answer_question(self, question):
+        if 'room' in question:
+            return self.handle_room_question(question)
+        elif 'restaurant' in question:
+            return self.handle_restaurant_question(question)
+        else:
+            return 'I am not sure how to answer that. Ask about room rates or restaurant rates.'
+
+    def handle_room_question(self, question):
+        words = question.split()
+        room_type_index = words.index('room') + 1
+        if room_type_index < len(words):
+            room_type = words[room_type_index]
+            rate = self.get_room_rate(room_type)
+            return f'The rate for a {room_type} room is ${rate} per night.'
+        else:
+            return 'Please specify the type of room you are asking about.'
+
+    def handle_restaurant_question(self, question):
+        words = question.split()
+        meal_type_index = words.index('restaurant') + 1
+        if meal_type_index < len(words):
+            meal_type = words[meal_type_index]
+            rate = self.get_restaurant_rate(meal_type)
+            return f'The rate for {meal_type} is ${rate}.'
+        else:
+            return 'Please specify the meal you are asking about.'
+
+
+# Example usage:
+chatbot = HotelChatbot()
+
+while True:
+    user_input = input('User: ')
+    if user_input.lower() == 'exit':
+        print('Hotel Chatbot: Goodbye!')
+        break
+    response = chatbot.answer_question(user_input)
+    print('Hotel Chatbot:', response)
